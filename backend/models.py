@@ -27,7 +27,7 @@ class MongoBaseModel(BaseModel):
 class CarBase(MongoBaseModel):
     brand: str = Field(..., min_length=3)
     make: str = Field(..., min_length=3)
-    year: int = Field(...)
+    year: int = Field(..., gt=1975, lt=2023)
     price: int = Field(...)
     km: int = Field(...)
     cm3: int = Field(...)
