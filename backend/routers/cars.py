@@ -38,27 +38,19 @@ async def list_all_cars(
 
     RESULTS_PER_PAGE = 25
     skip = (page - 1) * RESULTS_PER_PAGE
-    print(1)
     query = {"price": {"$lt": max_price, "$gt": min_price}}
     if brand:
         query["brand"] = brand
-    print(2)
 
     full_query = request.app.mongodb['cars1'].find(query).sort("_id", -1).skip(skip).limit(
         RESULTS_PER_PAGE)
-    # results = [CarDB(**raw_car) async for raw_car in full_query]
-    results = []
-    async for raw_car in full_query:
-        print(3)
-        car_instance = CarDB(**raw_car)
-        results.append(car_instance)
-    print(4)
+    results = [CarDB(**raw_car) async for raw_car in full_query]
     return results
 
 
 @router.patch("/{id}", response_description="Update car")
 async def update_task(id:str, request:Request, car:CarUpdate = Body(...)):
-    await request.app.mongodb['cars1'].update_one({"_id": id}, {"$set": car.dict(exclude_unset=True)})
+    await request.app.mongodb['cars1'].update_one({"_id": id}, {"$set": car.model_dump(exclude_unset=True)})
     if (car := await request.app.mongodb["cars1"].find_one({"_id": id})) is not None:
         return CarDB(**car)
     raise HTTPException(status_code=404, detail=f"Car with {id} not found")
