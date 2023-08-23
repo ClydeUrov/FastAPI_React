@@ -13,7 +13,7 @@ class PyObjectId(ObjectId):
             raise ValueError("Invalid objectid")
         return ObjectId(v)
     @classmethod
-    def __modify_schema__(cls, field_schema):
+    def __get_pydantic_json_schema__(cls, field_schema):
         field_schema.update(type="string")
 
 
@@ -22,11 +22,12 @@ class MongoBaseModel(BaseModel):
 
     class Config:
         json_encoders = {ObjectId: str}
+        arbitrary_types_allowed = True
 
 
 class CarBase(MongoBaseModel):
-    brand: str = Field(..., min_length=3)
-    make: str = Field(..., min_length=3)
+    brand: str = Field(..., min_length=1)
+    make: str = Field(..., min_length=1)
     year: int = Field(..., gt=1975, lt=2023)
     price: int = Field(...)
     km: int = Field(...)
@@ -36,5 +37,6 @@ class CarBase(MongoBaseModel):
 class CarUpdate(MongoBaseModel):
     price: Optional[int] = None
 
+
 class CarDB(CarBase):
-    pass
+    id: ObjectId = Field(default_factory=ObjectId, alias="_id")
