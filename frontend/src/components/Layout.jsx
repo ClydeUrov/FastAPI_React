@@ -1,11 +1,16 @@
 import Header from "./Header";
 import Footer from "./Footer";
+import { Outlet } from "react-router-dom";
 
-const Layout = ({children}) => {
+const Layout = () => {
     return (
-        <div className="flex flex-col h-screen bg-orange-400">
+        <div className="flex flex-col min-h-screen bg-orange-400">
             <Header />
-            <div className="flex-1  min-h-full flex flex-col align-middle justify-center">{children}</div>
+            
+            <main className="flex-1 flex flex-col justify-center my-2 mb-2">
+                <Outlet />
+            </main>
+            
             <Footer />
         </div>
     )

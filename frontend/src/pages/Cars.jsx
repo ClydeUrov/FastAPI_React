@@ -2,7 +2,7 @@ import Layout from "../components/Layout";
 import Card from "../components/Card";
 import React, { useState, useEffect } from "react";
 
-const Cars = () => {
+function Cars () {
     const [cars, setCars] = useState([]);
     const [brand, setBrand] = useState("");
     const [isPending, setIsPending] = useState(true);
@@ -19,6 +19,7 @@ const Cars = () => {
         setPage(event.target.value)
         setIsPending(true)
     }
+    console.log("I in cars")
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/cars?brand=${brand}&page=${page}`)
@@ -35,7 +36,7 @@ const Cars = () => {
                 <select name="cars" id="cars" onChange={handleChangeBrand}>
                     <option value="">All cars</option>
                     <option value="Fiat">Fiat</option>
-                    <option value="">Citroen</option>
+                    <option value="Citroen">Citroen</option>
                     <option value="Renault">Renault</option>                   
                     <option value="Opel">Opel</option>  
                 </select>

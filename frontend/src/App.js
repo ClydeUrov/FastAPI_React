@@ -1,14 +1,19 @@
 import './App.css';
 import Layout from './components/Layout';
-import Lorem from './components/Lorem';
+import Login from "./components/Login";
+import Register from "./components/Register";
+import HomePage from "./components/HomePage";
+import {Route, Routes} from "react-router-dom"
 
 function App() {
   return (
-    <Layout>
-      <div className="App">
-        <Lorem title="Cars FARM"/>
-      </div>
-    </Layout>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="/" eleemnt={<HomePage />} />
+        <Route path="login" eleemnt={<Login />} />
+        <Route path="register" eleemnt={<Register />} />
+      </Route>
+    </Routes>
   );
 }
 
