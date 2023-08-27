@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from decouple import config
 from motor.motor_asyncio import AsyncIOMotorClient
 from routers.cars import router as cars_router
+from routers.users import router as users_router
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -32,6 +33,7 @@ async def shutdown_db_client():
 
 
 app.include_router(cars_router, prefix="/cars", tags=["cars"])
+app.include_router(users_router, prefix="/users", tags=["users"])
 
 
 if __name__ == "__main__":
