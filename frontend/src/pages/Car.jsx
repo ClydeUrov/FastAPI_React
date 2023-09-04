@@ -5,6 +5,7 @@ import FormInput from '../components/FormInput'
 
 const Car = () => {
     const {id} = useParams();
+    console.log("id", id)
     const navigate = useNavigate();
     const [car, setCar] = useState(null);
     const [price, setPrice] = useState(null);
@@ -21,6 +22,7 @@ const Car = () => {
             setError("Error fetching car")
         } else {
             const data = await res.json()
+            console.log("data", data)
             setCar(data)
             setPrice(data.price)
         }
@@ -75,21 +77,25 @@ const Car = () => {
 
 
     return (
-        <Layout>
-            {isPending && <div className="bg-red-500 w-full text-white h-10 text-lg">
-                <h2>Loading car...</h2>
-            </div>}
+        <div className="h-10">
+            <div className='h-10'>
+            {isPending && (
+                <div className="bg-red-500 w-full text-white h-10 text-lg">
+                    <h2>Loading car...</h2>
+                </div>
+            )}
     
-            {error && <ul className="flex flex-col mx-auto text-center">
-                { error && error.map(
-                    (el, index)=>(                            
-                        <li key={index} className="my-2 p-1 border-2 border-red-700 max-w-md mx-auto">{el}</li>
-                        )
-                    )
-                }       
-            </ul>}
-    
-            {car&&<div>               
+            {error.length > 0 && (
+                    <ul className="flex flex-col mx-auto text-center">
+                        {error.map((el, index) => (
+                            <li key={index} className="my-2 p-1 border-2 border-red-700 max-w-md mx-auto">
+                                {el}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+        
+            {car && (              
                 <div className="flex flex-col justify-between min-h-full items-center">
                     <div className="font-bold text-xl text-gray-600 my-3">
                         {car.brand} {car.make}
@@ -97,8 +103,8 @@ const Car = () => {
                     <div className="max-w-xl">
                         <img 
                             alt="A car!"
-                            src="https://via.placeholder.com/960x550.png?text=IMAGINE+A+CAR!" />
-                    </div>        
+                            src="https://via.placeholder.com/960x550.png?text=IMAGINE+A+CAR!" /> 
+                    </div>
                     <div className="flex flex-col items-center font-normal text-lg">
                         <div>Price: <span className="font-semibold text-orange-600 text-xl">{car.price}</span></div>
                         <div>Year: {car.year}</div>
@@ -106,15 +112,16 @@ const Car = () => {
                     </div>
     
                     <div className="flex flex-row">
-                        
-                        <FormInput 
-                                label='change price'
-                                placeholder={price}
-                                type="number"
-                                value={price}
-                                onChange={onChange}
-                                required />
-                        
+                        <div className="">
+                            <FormInput 
+                                    label='Change Price   '
+                                    placeholder={price}
+                                    type="number"
+                                    value={price}
+                                    onChange={onChange}
+                                    required 
+                                    />
+                        </div>
                         <button
                             onClick={updatePrice}
                             className="bg-yellow-500 text-white p-2 rounded-md m-3 transition-opacity hover:opacity-80">
@@ -127,10 +134,10 @@ const Car = () => {
                         </button>         
                     </div>
                     <p>Warning: deleting is permanent!</p>      
-
                 </div>
-            </div>}
-        </Layout>
+            )}
+            </div>
+        </div>
     )
 }
 
