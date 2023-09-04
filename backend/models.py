@@ -20,7 +20,7 @@ class PyObjectId(ObjectId):
 
 
 class MongoBaseModel(BaseModel):
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    id: ObjectId = Field(default_factory=ObjectId, alias="_id")
 
     class Config:
         json_encoders = {ObjectId: str}
@@ -33,7 +33,7 @@ class CarBase(MongoBaseModel):
     year: int = Field(..., gt=1975, lt=2023)
     price: int = Field(...)
     km: int = Field(...)
-    cm3: int = Field(..., gt=600, lt=8000)
+    cm3: int = Field(..., gt=0, lt=8000)
 
 
 class CarUpdate(MongoBaseModel):

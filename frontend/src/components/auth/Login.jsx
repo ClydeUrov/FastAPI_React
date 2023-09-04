@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
     const [apiError, setApiError] = useState();
-    const { setAuth } = useAuth();
+    const { setUser } = useAuth();
     let navigate = useNavigate();
 
     const {
@@ -15,6 +15,7 @@ const Login = () => {
     } = useForm();
 
     const onFormSubmit = async (data) => {
+        console.log(data)
         const response = await fetch("http://127.0.0.1:8000/users/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -22,11 +23,13 @@ const Login = () => {
         });
         if (response.ok) {
             const token = await response.json();
+            console.log('token', token)
             await getUserData(token["token"]);
         } else {
             let errorResponse = await response.json();
+            console.log("errorResponse", errorResponse)
             setApiError(errorResponse["detail"]);
-            setAuth(null);
+            setUser(null);
         }
     };
     const onErrors = (errors) => console.error(errors);
@@ -42,7 +45,7 @@ const Login = () => {
         if (response.ok) {
             let userData = await response.json();
             userData["token"] = token;
-            setAuth(userData);
+            setUser(userData);
             setApiError(null);
             navigate("/", { replace: true });
         }
@@ -63,7 +66,7 @@ const Login = () => {
                         autoComplete="off"
                         {...register("email", { required: "The email is required" })}
                     />
-                    {errors?.email && errors.email.message}
+                    {errors?.email && <span className="error">{errors.email.message}</span>}
 
                     <input
                         type="password"
@@ -72,7 +75,7 @@ const Login = () => {
                         name="password"
                         {...register("password", { required: "The password is required"})}
                     />
-                    {errors?.password && errors.password.message}
+                    {errors?.password && <span className="error">{errors.password.message}</span>}
 
                     <button className="btn btn-outline btn-accent m-3 btn-block">
                         Login

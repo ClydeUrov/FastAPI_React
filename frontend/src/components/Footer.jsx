@@ -1,8 +1,10 @@
 const Footer =() => {
     return (
-        <div className="bg-black text-white flex justify-center items-center h-24">
-            <div>A FARM stack based application for cars</div>
-        </div>
+        <footer className="footer footer-center flex-1 flex flex-col justify-center items-center p-4 bg-base-300 text-base-content">
+            <div>
+                <p>Copyright © 2023 - All right reserved by FARM Cars fullstack car sales</p>
+            </div>
+        </footer>
     )
 }
 
