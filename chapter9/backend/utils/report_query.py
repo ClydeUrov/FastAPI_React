@@ -13,7 +13,7 @@ cars = db["cars"]
 def make_query(cars_number: int):
     query = [
          {"$match": {"year": {"$gt": 2010}}},
-         {"$project": {"_id": 0}},
+         {"$project": {"_id": 0, }},
          {"$sample": {"size": cars_number}},
          {"$sort": {"brand": 1, "make": 1, "year": 1}},
     ]

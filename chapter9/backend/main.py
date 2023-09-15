@@ -9,7 +9,7 @@ from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 
 from motor.motor_asyncio import AsyncIOMotorClient
-from .routers.cars import router as cars_router
+from chapter9.backend.routers.cars import router as cars_router
 
 DB_URL = config('DB_URL', cast=str)
 DB_NAME = config('DB_NAME', cast=str)

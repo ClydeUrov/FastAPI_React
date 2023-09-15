@@ -7,7 +7,7 @@ SENDGRID_ID = config("SENDGRID_ID", cast=str)
 
 def send_email(email, subject, HTMLcontent):
     sg = sendgrid.SendGridAPIClient(api_key=SENDGRID_ID)
-    from_email = Email("your@email.rs")
+    from_email = Email("klaidgrif@gmail.com")
     to_email = To(email)
     subject = "FARM Cars daily report"
     content = Content(

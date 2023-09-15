@@ -4,6 +4,8 @@ from chapter9.backend.models import CarBase
 from fastapi_cache.decorator import cache
 from fastapi import APIRouter, Request, Body, HTTPException, BackgroundTasks
 from chapter9.backend.utils.report import report_pipeline
+import joblib
+import pandas as pd
 
 router = APIRouter()
 
@@ -99,3 +101,27 @@ async def send_mail(
     background_tasks.add_task(report_pipeline, email, cars_num)
 
     return {"Received": {"email": email, "cars_num": cars_num}}
+
+@router.post("/predict", response_description="Predict price")
+async def predict(
+    brand: str = Body(...),
+    make: str = Body(...),
+    year: int = Body(...),
+    cm3: int = Body(...),
+    km: int = Body(...),
+):
+    print(brand, make, year, cm3, km)
+    loading_model = joblib.load("./random_forest_pipe.joblib")
+
+    input_data = {
+        "brand": brand,
+        "make": make,
+        "year": year,
+        "cm3": cm3,
+        "km": km,
+    }
+
+    from_db_df = pd.DataFrame(input_data, index=[0])
+
+    prediction = float(loading_model.predict(from_db_df)[0])
+    return {"prediction": prediction}

@@ -31,4 +31,4 @@ class CarBase(MongoBaseModel):
     year: int = Field(..., gt=1975, lt=2023)
     price: int = Field(...)
     km: int = Field(...)
-    cm3: int = Field(..., gt=0, lt=8000)
+    cm3: int = Field(..., gt=0, lt=22232)
