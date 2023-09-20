@@ -48,7 +48,7 @@ async def get_simple(n: int, request: Request):
         {"$sort": {"brand": 1, "make": 1, "year": 1}},
     ]
 
-    full_query = request.app.mongodb["cars"].aggregate(query)
+    full_query = request.app.mongodb["cars1"].aggregate(query)
     return [el async for el in full_query]
 
 
@@ -63,7 +63,7 @@ async def brand_price(brand: str, val: str, request: Request):
         {"$sort": {f"avg_{val}": 1}},
     ]
 
-    full_query = request.app.mongodb["cars"].aggregate(query)
+    full_query = request.app.mongodb["cars1"].aggregate(query)
     return [el async for el in full_query]
 
 
@@ -73,7 +73,7 @@ async def brand_count(request: Request):
 
     query = [{"$group": {"_id": "$brand", "count": {"$sum": 1}}}]
 
-    full_query = request.app.mongodb["cars"].aggregate(query)
+    full_query = request.app.mongodb["cars1"].aggregate(query)
     return [el async for el in full_query]
 
 
@@ -87,7 +87,7 @@ async def brand_count(brand: str, request: Request):
         {"$sort": {"count": -1}},
     ]
 
-    full_query = request.app.mongodb["cars"].aggregate(query)
+    full_query = request.app.mongodb["cars1"].aggregate(query)
     return [el async for el in full_query]
 
 
@@ -110,7 +110,6 @@ async def predict(
     cm3: int = Body(...),
     km: int = Body(...),
 ):
-    print(brand, make, year, cm3, km)
     loading_model = joblib.load("./random_forest_pipe.joblib")
 
     input_data = {

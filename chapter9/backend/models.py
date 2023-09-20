@@ -1,5 +1,8 @@
+from enum import Enum
+
 from bson import ObjectId
-from pydantic import Field, BaseModel, validator
+from pydantic import Field, BaseModel, validator, field_validator, EmailStr
+from email_validator import validate_email, EmailNotValidError
 
 
 class PyObjectId(ObjectId):
@@ -32,3 +35,39 @@ class CarBase(MongoBaseModel):
     price: int = Field(...)
     km: int = Field(...)
     cm3: int = Field(..., gt=0, lt=22232)
+
+
+class CarDB(CarBase):
+    owner: str = Field(...)
+
+
+class Role(str, Enum):
+    SELLER = "SELLER"
+    BUYER = "BUYER"
+    ADMIN = "ADMIN"
+
+
+class UserBase(MongoBaseModel):
+    username: str = Field(..., min_length=2, max_length=15)
+    email: str = Field(...)
+    password: str = Field(...)
+    role: Role
+
+    @field_validator("email")
+    def valid_email(cls, v):
+        try:
+            email = validate_email(v).email
+            return email
+        except EmailNotValidError as e:
+            raise e
+
+
+class LoginBase(BaseModel):
+    email: str = EmailStr
+    password: str = Field(...)
+
+
+class CurrentUser(BaseModel):
+    email: str = EmailStr
+    username: str = Field(...)
+    role: str = Field(...)
